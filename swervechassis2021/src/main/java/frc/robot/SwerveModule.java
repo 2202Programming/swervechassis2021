@@ -21,7 +21,7 @@ public class SwerveModule {
   private static final double kWheelRadius = 0.0508;
   private static final int kEncoderResolution = 4096;
 
-  private static final double kModuleMaxAngularVelocity = Drivetrain.kMaxAngularSpeed;
+  private static final double kModuleMaxAngularVelocity = frc.robot.subsystems.DrivetrainSubsystem.kMaxAngularSpeed;
   private static final double kModuleMaxAngularAcceleration
       = 2 * Math.PI; // radians per second squared
 
@@ -97,5 +97,9 @@ public class SwerveModule {
 
     m_driveMotor.setVoltage(driveOutput + driveFeedforward);
     m_turningMotor.setVoltage(turnOutput + turnFeedforward);
+  }
+
+  public void updateOdometry() {
+    this.getState();
   }
 }

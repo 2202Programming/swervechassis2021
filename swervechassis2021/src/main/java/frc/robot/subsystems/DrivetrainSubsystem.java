@@ -1,3 +1,5 @@
+package frc.robot.subsystems;
+
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -5,31 +7,32 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot;
-
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.*;
 
 /**
  * Represents a swerve drive style drivetrain.
  */
-public class Drivetrain {
+public class DrivetrainSubsystem extends SubsystemBase {
   public static final double kMaxSpeed = 3.0; // 3 meters per second
   public static final double kMaxAngularSpeed = Math.PI; // 1/2 rotation per second
 
-  private final Translation2d m_frontLeftLocation = new Translation2d(0.381, 0.381);
-  private final Translation2d m_frontRightLocation = new Translation2d(0.381, -0.381);
-  private final Translation2d m_backLeftLocation = new Translation2d(-0.381, 0.381);
-  private final Translation2d m_backRightLocation = new Translation2d(-0.381, -0.381);
+  private final Translation2d m_frontLeftLocation = new Translation2d(19.5 / 2, 23.5 / 2);
+  private final Translation2d m_frontRightLocation = new Translation2d(19.5 / 2, -23.5 / 2);
+  private final Translation2d m_backLeftLocation = new Translation2d(-19.5 / 2, 23.5 / 2);
+  private final Translation2d m_backRightLocation = new Translation2d(-19.5 / 2, -23.5 / 2);
 
-  private final SwerveModule m_frontLeft = new SwerveModule(1, 2);
-  private final SwerveModule m_frontRight = new SwerveModule(3, 4);
-  private final SwerveModule m_backLeft = new SwerveModule(5, 6);
-  private final SwerveModule m_backRight = new SwerveModule(7, 8);
+  private final SwerveModule m_frontLeft = new SwerveModule(26, 27);
+  private final SwerveModule m_frontRight = new SwerveModule(20, 21);
+  private final SwerveModule m_backLeft = new SwerveModule(22, 23);
+  private final SwerveModule m_backRight = new SwerveModule(24, 25);
 
   private final AnalogGyro m_gyro = new AnalogGyro(0);
 
@@ -39,7 +42,7 @@ public class Drivetrain {
 
   private final SwerveDriveOdometry m_odometry = new SwerveDriveOdometry(m_kinematics, getAngle());
 
-  public Drivetrain() {
+  public DrivetrainSubsystem() {
     m_gyro.reset();
   }
 
@@ -74,7 +77,29 @@ public class Drivetrain {
     m_backLeft.setDesiredState(swerveModuleStates[2]);
     m_backRight.setDesiredState(swerveModuleStates[3]);
   }
+@Override
+public void periodic() {
+  m_frontLeft.updateOdometry();
+  m_frontRight.updateOdometry();
+  m_backLeft.updateOdometry();
+  m_backRight.updateOdometry();
 
+  /* 
+  SmartDashboard.putNumber("Front Left Module Angle", Math.toDegrees(m_frontLeft.getCurrentAngle()));
+  SmartDashboard.putNumber("Front Right Module Angle", Math.toDegrees(m_frontRight.getCurrentAngle()));
+  SmartDashboard.putNumber("Back Left Module Angle", Math.toDegrees(m_backLeft.getCurrentAngle()));
+  SmartDashboard.putNumber("Back Right Module Angle", Math.toDegrees(m_backRight.getCurrentAngle()));
+
+  SmartDashboard.putNumber("Gyroscope Angle", gyroscope.getAngle().toDegrees());
+
+  m_frontLeft.updateState(TimedRobot.kDefaultPeriod);
+  m_frontRight.updateState(TimedRobot.kDefaultPeriod);
+  m_backLeft.updateState(TimedRobot.kDefaultPeriod);
+  m_backRight.updateState(TimedRobot.kDefaultPeriod);
+
+*/
+
+}
   /**
    * Updates the field relative position of the robot.
    */
